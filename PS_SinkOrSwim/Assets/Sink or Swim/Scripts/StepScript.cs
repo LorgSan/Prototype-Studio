@@ -11,7 +11,11 @@ public class StepScript : MonoBehaviour
     [SerializeField] float timeTooSoon = 2;
     [SerializeField] float timeToWait = 4;
     [SerializeField] Text debugText;
+    
+    public GameObject hitObject;
     bool isRunning = false;
+    private Coroutine StepCoroutine;
+    Animator anim;
     #endregion
     public void RestartScene()
     {
@@ -20,20 +24,18 @@ public class StepScript : MonoBehaviour
 
     void Start()
     {
+        anim = GetComponent<Animator>();
         CurrentState = StepState.Start;
     }
     void Update()
     {
         InputCheck();
-        //Debug.Log(timeLeft);
-        //float timeInSec = timeLeft%60;
         debugText.text = timeLeft.ToString();
-        //Debug.Log(Mathf.RoundToInt(timeLeft));
     }
 
     #region StepStateMachine
     public enum StepState
-    {
+    {   
         Start,
         LeftStep,
         RightStep,
@@ -69,7 +71,6 @@ public class StepScript : MonoBehaviour
                 Debug.Log("You fell!");
                 break;
             default:
-                //Debug.Log("this state doesn't exist");
                 break;
         }
     }
@@ -84,39 +85,48 @@ public class StepScript : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Mouse0))
         {
-            if (CurrentState == StepState.RightStep || CurrentState == StepState.Start)
+            anim.SetTrigger("Start");
+            if (hitObject.tag == "LeftLeg")
             {
-                var isOnTime = CoroutineChecker();
-                if (isOnTime == true)
-                {
-                    CurrentState = StepState.LeftStep;
-                    if (isRunning == true)
-                        {
-                            StopCoroutine("StepDelay");
-                        }
-                    StartCoroutine(StepDelay(timeToWait));
-                }
-                else CurrentState = StepState.Fall;
-            } else CurrentState = StepState.Fall;
+                Debug.Log("left leg");
+                StepChecker (StepState.RightStep, StepState.LeftStep);
+            }
         }
 
         if (Input.GetKeyDown(KeyCode.Mouse1))
         {
-            if (CurrentState == StepState.LeftStep || CurrentState == StepState.Start)
+            if (hitObject.tag == "RightLeg")
             {
-                var isOnTime = CoroutineChecker();
-                if (isOnTime == true)
-                {
-                    CurrentState = StepState.RightStep;
-                    if (isRunning == true)
-                        {
-                            StopCoroutine("StepDelay");
-                        }
-                    StartCoroutine(StepDelay(timeToWait));
-                }
-                else CurrentState = StepState.Fall;
-            } else CurrentState = StepState.Fall;
+                Debug.Log("right leg");
+                StepChecker(StepState.LeftStep, StepState.RightStep);
+            }
         }
+    }
+
+    void StepChecker(StepState previousStep, StepState currentStep)
+    {
+        if (CurrentState == previousStep || CurrentState == StepState.Start)
+        {
+            var isOnTime = CoroutineChecker();
+            if (isOnTime == true)
+            {
+                CurrentState = currentStep;
+                if (isRunning == true)
+                    {
+                        StopCoroutine(StepCoroutine);
+                        isRunning = false;
+                    }
+                StepCoroutine = StartCoroutine(StepDelay(timeToWait));
+                if (currentStep == StepState.RightStep)
+                {
+                    anim.SetBool("RightStepDone", true);
+                    anim.SetBool("LeftStepDone", false);
+                } else 
+                    anim.SetBool("LeftStepDone", true);
+                    anim.SetBool("RightStepDone", false);
+            }
+            else CurrentState = StepState.Fall;
+        } else CurrentState = StepState.Fall;
     }
 
     bool CoroutineChecker()
