@@ -86,18 +86,18 @@ public class StepScript : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Mouse0))
         {
             anim.SetTrigger("Start");
-            if (hitObject.tag == "LeftLeg")
+            if (hitObject != null && hitObject.tag == "LeftLeg")
             {
-                Debug.Log("left leg");
+                //Debug.Log("left leg");
                 StepChecker (StepState.RightStep, StepState.LeftStep);
             }
         }
 
         if (Input.GetKeyDown(KeyCode.Mouse1))
         {
-            if (hitObject.tag == "RightLeg")
+            if (hitObject != null && hitObject.tag == "RightLeg")
             {
-                Debug.Log("right leg");
+                //Debug.Log("right leg");
                 StepChecker(StepState.LeftStep, StepState.RightStep);
             }
         }
@@ -110,20 +110,14 @@ public class StepScript : MonoBehaviour
             var isOnTime = CoroutineChecker();
             if (isOnTime == true)
             {
+                anim.SetBool("RightLeftSwitcher", !anim.GetBool("RightLeftSwitcher"));
                 CurrentState = currentStep;
                 if (isRunning == true)
                     {
                         StopCoroutine(StepCoroutine);
                         isRunning = false;
-                    }
+                    } 
                 StepCoroutine = StartCoroutine(StepDelay(timeToWait));
-                if (currentStep == StepState.RightStep)
-                {
-                    anim.SetBool("RightStepDone", true);
-                    anim.SetBool("LeftStepDone", false);
-                } else 
-                    anim.SetBool("LeftStepDone", true);
-                    anim.SetBool("RightStepDone", false);
             }
             else CurrentState = StepState.Fall;
         } else CurrentState = StepState.Fall;
