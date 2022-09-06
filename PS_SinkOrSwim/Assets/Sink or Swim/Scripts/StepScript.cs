@@ -13,6 +13,8 @@ public class StepScript : MonoBehaviour
     [SerializeField] Text debugText;
     [SerializeField] ButtonScript rightLocator;
     [SerializeField] ButtonScript leftLocator;
+
+    bool doneRunning = false;
     
     public GameObject hitObject;
     bool isRunning = false;
@@ -70,7 +72,8 @@ public class StepScript : MonoBehaviour
                 Debug.Log("Right step done");
                 break;
             case StepState.Fall:
-                Debug.Log("You fell!");
+                anim.SetTrigger("Fall");
+                doneRunning = true;
                 break;
             default:
                 break;
@@ -85,23 +88,26 @@ public class StepScript : MonoBehaviour
             RestartScene();
         }
 
-        if (Input.GetKeyDown(KeyCode.Mouse0))
+        if (doneRunning == false)
         {
-            anim.SetTrigger("Start");
-            if (hitObject != null && hitObject.tag == "LeftLeg")
+            if (Input.GetKeyDown(KeyCode.Mouse0))
             {
-                //Debug.Log("left leg");
-                StepChecker (StepState.RightStep, StepState.LeftStep);
+                anim.SetTrigger("Start");
+                if (hitObject != null && hitObject.tag == "LeftLeg")
+                {
+                    //Debug.Log("left leg");
+                    StepChecker (StepState.RightStep, StepState.LeftStep);
 
+                }
             }
-        }
 
-        if (Input.GetKeyDown(KeyCode.Mouse1))
-        {
-            if (hitObject != null && hitObject.tag == "RightLeg")
+            if (Input.GetKeyDown(KeyCode.Mouse1))
             {
-                //Debug.Log("right leg");
-                StepChecker(StepState.LeftStep, StepState.RightStep);
+                if (hitObject != null && hitObject.tag == "RightLeg")
+                {
+                    //Debug.Log("right leg");
+                    StepChecker(StepState.LeftStep, StepState.RightStep);
+                }
             }
         }
     }
@@ -142,13 +148,16 @@ public class StepScript : MonoBehaviour
     IEnumerator StepDelay (float timeToWait, StepState currentStep)
     {
         isRunning = true;
-        if (currentStep == StepState.LeftStep)
-        {
-            leftLocator.ButtonReset();
-            leftLocator.isRunning = true;
 
-        } else rightLocator.ButtonReset();
-        rightLocator.isRunning = true;
+        if (currentStep == StepState.RightStep)
+        {
+            //leftLocator.ButtonReset();
+            //leftLocator.isRunning = true;
+            leftLocator.button.SetActive(false);
+
+        } else //rightLocator.ButtonReset();
+        //rightLocator.isRunning = true;
+        rightLocator.button.SetActive(false);
 
         for(timeLeft = timeToWait; timeLeft > 0; timeLeft -= Time.deltaTime)
         yield return null;

@@ -10,7 +10,7 @@ public class ButtonScript : MonoBehaviour
     Transform locator;
     Vector3 locatorScale;
     SpriteRenderer locatorSR;
-    GameObject button;
+    public GameObject button;
     // Start is called before the first frame update
     void Start()
     {
@@ -40,7 +40,6 @@ public class ButtonScript : MonoBehaviour
 
     public void ButtonStarter()
     {
-        Vector3 newScale = new Vector3 (-0.00065f, -0.0003f, locator.localScale.z);
-        locator.localScale = Vector3.MoveTowards(locator.localScale, newScale, 0.1f);
+
     }
 }
