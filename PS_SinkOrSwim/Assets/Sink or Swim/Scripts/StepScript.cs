@@ -75,6 +75,8 @@ public class StepScript : MonoBehaviour
                 anim.SetTrigger("Fall");
                 doneRunning = true;
                 GetComponent<AudioSource>().Play(0);
+                //leftLocator.GetComponent<ButtonScript>().locatorSR.color = Color.red;
+                //rightLocator.GetComponent<ButtonScript>().locatorSR.color = Color.red;
                 break;
             default:
                 break;

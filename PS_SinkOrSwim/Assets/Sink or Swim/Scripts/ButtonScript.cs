@@ -9,7 +9,7 @@ public class ButtonScript : MonoBehaviour
     public bool isRunning;
     Transform locator;
     Vector3 locatorScale;
-    SpriteRenderer locatorSR;
+    public SpriteRenderer locatorSR;
     public GameObject button;
     // Start is called before the first frame update
     void Start()
