@@ -74,6 +74,7 @@ public class StepScript : MonoBehaviour
             case StepState.Fall:
                 anim.SetTrigger("Fall");
                 doneRunning = true;
+                GetComponent<AudioSource>().Play(0);
                 break;
             default:
                 break;
