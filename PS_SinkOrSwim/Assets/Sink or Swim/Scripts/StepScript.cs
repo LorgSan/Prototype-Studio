@@ -11,6 +11,8 @@ public class StepScript : MonoBehaviour
     [SerializeField] float timeTooSoon = 2;
     [SerializeField] float timeToWait = 4;
     [SerializeField] Text debugText;
+    [SerializeField] ButtonScript rightLocator;
+    [SerializeField] ButtonScript leftLocator;
     
     public GameObject hitObject;
     bool isRunning = false;
@@ -90,6 +92,7 @@ public class StepScript : MonoBehaviour
             {
                 //Debug.Log("left leg");
                 StepChecker (StepState.RightStep, StepState.LeftStep);
+
             }
         }
 
@@ -115,9 +118,11 @@ public class StepScript : MonoBehaviour
                 if (isRunning == true)
                     {
                         StopCoroutine(StepCoroutine);
+                        leftLocator.isRunning = false; 
                         isRunning = false;
                     } 
-                StepCoroutine = StartCoroutine(StepDelay(timeToWait));
+                StepCoroutine = StartCoroutine(StepDelay(timeToWait, currentStep));
+
             }
             else CurrentState = StepState.Fall;
         } else CurrentState = StepState.Fall;
@@ -134,9 +139,17 @@ public class StepScript : MonoBehaviour
         return isOntime;
     }
     
-    IEnumerator StepDelay (float timeToWait)
+    IEnumerator StepDelay (float timeToWait, StepState currentStep)
     {
         isRunning = true;
+        if (currentStep == StepState.LeftStep)
+        {
+            leftLocator.ButtonReset();
+            leftLocator.isRunning = true;
+
+        } else rightLocator.ButtonReset();
+        rightLocator.isRunning = true;
+
         for(timeLeft = timeToWait; timeLeft > 0; timeLeft -= Time.deltaTime)
         yield return null;
         CurrentState = StepState.Fall;

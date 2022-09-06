@@ -417,7 +417,7 @@ Transform:
   m_GameObject: {fileID: 625816830}
   m_LocalRotation: {x: -0.00000008940697, y: -0.00000008146036, z: 1.7763568e-14, w: 1}
   m_LocalPosition: {x: 0.0007000009, y: 0.00128, z: -0.008499999}
-  m_LocalScale: {x: 0.0020619296, y: 0.0009278687, z: 0.0020619296}
+  m_LocalScale: {x: 0.0035, y: 0.00155, z: 0.0035}
   m_Children: []
   m_Father: {fileID: 1112941610}
   m_RootOrder: 1
@@ -498,8 +498,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 634982369}
   m_LocalRotation: {x: -0.00000008940697, y: -0.00000008146036, z: 1.7763568e-14, w: 1}
-  m_LocalPosition: {x: -0.0015000001, y: 0.0022999998, z: -0.008499998}
-  m_LocalScale: {x: 0.0020619296, y: 0.0009278687, z: 0.0020619296}
+  m_LocalPosition: {x: -0.0015, y: 0.0023, z: -0.0085}
+  m_LocalScale: {x: 0.0035, y: 0.00155, z: 0.0035}
   m_Children: []
   m_Father: {fileID: 1041822037}
   m_RootOrder: 1
@@ -671,8 +671,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   timeTooSoon: 2
-  timeToWait: 4
+  timeToWait: 3
   debugText: {fileID: 1723389446}
+  rightLocator: {fileID: 1550754057}
+  leftLocator: {fileID: 1990126882}
   hitObject: {fileID: 919132148827999626}
 --- !u!4 &872727499
 Transform:
@@ -878,7 +880,7 @@ GameObject:
   - component: {fileID: 1550754056}
   - component: {fileID: 1550754057}
   m_Layer: 0
-  m_Name: Child
+  m_Name: RightChild
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -912,6 +914,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   target: {fileID: 519420032}
+  isRunning: 0
 --- !u!1 &1635175482
 GameObject:
   m_ObjectHideFlags: 0
@@ -1174,7 +1177,7 @@ GameObject:
   - component: {fileID: 1990126881}
   - component: {fileID: 1990126882}
   m_Layer: 0
-  m_Name: Child
+  m_Name: LeftChild
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1208,6 +1211,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   target: {fileID: 519420032}
+  isRunning: 0
 --- !u!4 &543450651731276470
 Transform:
   m_ObjectHideFlags: 0
@@ -1440,7 +1444,7 @@ SkinnedMeshRenderer:
   m_Quality: 0
   m_UpdateWhenOffscreen: 0
   m_SkinnedMotionVectors: 1
-  m_Mesh: {fileID: 2534964839176971238, guid: 11448eb19330c324ab697c7b0fd5663f, type: 3}
+  m_Mesh: {fileID: 2534964839176971238, guid: 50bafa1005b3365469ad9c0ccd1cf0bd, type: 3}
   m_Bones:
   - {fileID: 6583733711772476610}
   - {fileID: 2854563698708006985}
@@ -1494,7 +1498,7 @@ SkinnedMeshRenderer:
   m_Quality: 0
   m_UpdateWhenOffscreen: 0
   m_SkinnedMotionVectors: 1
-  m_Mesh: {fileID: 2534964839176971238, guid: 11448eb19330c324ab697c7b0fd5663f, type: 3}
+  m_Mesh: {fileID: 2534964839176971238, guid: 50bafa1005b3365469ad9c0ccd1cf0bd, type: 3}
   m_Bones:
   - {fileID: 6583733710710587716}
   - {fileID: 2854563697620839887}
