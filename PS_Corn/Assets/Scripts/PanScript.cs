@@ -26,6 +26,7 @@ public class PanScript : MonoBehaviour
     #endregion
 
     [SerializeField] Vector3[] cobPos;
+    [SerializeField] float[] cobRot;
     List<GameObject> cobs = new List<GameObject>();
 
     void Start()
@@ -39,14 +40,17 @@ public class PanScript : MonoBehaviour
         {
             cobs.Add(cob);
             int position = cobs.IndexOf(cob);
-            cob.transform.parent = this.transform;
             cob.transform.position = cobPos[position];
-            cob.transform.localScale = new Vector3 (0.1521074f,0.1521074f,0.1521074f);
-            if (UtilScript.IsEven(position))
-            {
-                cob.transform.rotation = Quaternion.Euler(0f,0f,-90f);
-            }
-        } else Debug.Log("no space");
+            Debug.Log(position);
+            Debug.Log(cobPos.Length);
+            cob.transform.rotation = Quaternion.Euler(0f,0f,cobRot[position]);
+            cob.transform.parent = this.transform;
+        } else Destroy(cob);
+    }
+
+    void AvailabilityCheck()
+    {
+    
     }
     public void ButterPlace()
     {

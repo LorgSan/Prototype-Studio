@@ -6,6 +6,7 @@ public class GameManager : MonoBehaviour
 {
     GameObject currentCob;
     PanScript panScript;
+    public float cookTime = 15;
 
     #region SingletonDeclaration 
     private static GameManager instance; 
@@ -62,7 +63,7 @@ public class GameManager : MonoBehaviour
         if (Input.GetMouseButtonDown(0))
         {
             Collider2D col = Physics2D.OverlapPoint(Camera.main.ScreenToWorldPoint(Input.mousePosition));
-            if (col!=null && col.gameObject.tag == "Basket") 
+            if (col!=null && col.gameObject.tag == "Basket" && currentCob==null) 
             {
                 CurrentState = State.cobDragged;
                 GameObject cob = Instantiate(Resources.Load("Corn") as GameObject);
@@ -83,16 +84,16 @@ public class GameManager : MonoBehaviour
                 }
             }
         }
-        // Collider2D col = Physics2D.OverlapPoint(Camera.main.ScreenToWorldPoint(Input.mousePosition));
-        //     if (col!=null && col.gameObject.tag == "Basket") 
-        //     {
-        //         if (Input.GetMouseButtonDown(0))
-        //         {
-        //             CurrentState = State.cobDragged;
-        //             GameObject cob = Instantiate(Resources.Load("Corn") as GameObject);
-        //             currentCob = cob;
-        //         }
-        //     } else Debug.Log("no col");
+
+        if (Input.GetMouseButtonDown(1))
+        {
+            Collider2D col = Physics2D.OverlapPoint(Camera.main.ScreenToWorldPoint(Input.mousePosition));
+            if (col!=null & col.gameObject.tag == "Corn")
+            {
+                col.GetComponent<CornScript>().CobTurn();
+                Debug.Log("hit");
+            }
+        }
 
             if (CurrentState == State.cobDragged)
             {
