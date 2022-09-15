@@ -47,7 +47,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rawCorn: {r: 0.83921576, g: 0.5803922, b: 0.23529413, a: 1}
-  cookedCorn: {r: 0.46226418, g: 0.190303, b: 0.13737096, a: 1}
+  cookedCorn: {r: 0.5803922, g: 0.24313727, b: 0.0627451, a: 1}
   isPlaced: 0
   sidesReady: 0
   audioController: {fileID: 0}

@@ -6,9 +6,9 @@ using UnityEngine.SceneManagement;
 public class UtilScript : MonoBehaviour
 {
 
-public static void GoToScene(string sceneName)
+public static void RestartScene()
 {
-   SceneManager.LoadScene(sceneName);
+   SceneManager.LoadScene(SceneManager.GetActiveScene().name);
 }
 
 public static Vector3 SaveOffset(Transform objectToSaveFrom) //saving the offset between the object pivot and the mouse to use in the movewithmouse

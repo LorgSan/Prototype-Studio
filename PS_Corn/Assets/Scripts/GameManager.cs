@@ -59,6 +59,10 @@ public class GameManager : MonoBehaviour
     }
     void Update()
     {   
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            UtilScript.RestartScene();
+        }
 
         if (Input.GetMouseButtonDown(0))
         {
@@ -95,10 +99,10 @@ public class GameManager : MonoBehaviour
             }
         }
 
-            if (CurrentState == State.cobDragged)
-            {
-                UtilScript.MoveWithMouse(currentCob.transform, new Vector3(0,0,0));
-            }
+        if (CurrentState == State.cobDragged)
+        {
+            UtilScript.MoveWithMouse(currentCob.transform, new Vector3(0,0,0));
+        }
 
     }
 }
