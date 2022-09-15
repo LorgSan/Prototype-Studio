@@ -28,13 +28,37 @@ public class PanScript : MonoBehaviour
 
     [SerializeField] Vector3[] cobPos;
     [SerializeField] float[] cobRot;
-    List<CornScript> cobs = new List<CornScript>();
+    [SerializeField] List<CornScript> cobs = new List<CornScript>();
     [SerializeField] AudioClip readySound;
     [SerializeField] Text scoreText;
+
+    CircleCollider2D panCollider;
     float score;
+    GameManager myManager;
 
 
     bool cobWasCooked = false;
+
+    void Start()
+    {
+        myManager = GameManager.FindInstance();
+        panCollider = GetComponent<CircleCollider2D>();
+    }
+
+    void CheckCollider()
+    {
+        if (cobs.Count >= 4)
+        {
+            panCollider.enabled = !panCollider.enabled;
+        }
+        for(int x = 0; x < cobs.Count; x++)
+        {
+            if (cobs[x] == null)
+            {
+                panCollider.enabled = !panCollider.enabled;
+            }
+        }
+    }
 
     public void DestroyCob()
     {
@@ -47,6 +71,7 @@ public class PanScript : MonoBehaviour
                 {
                     int index = cobs.IndexOf(currentCob);
                     cobs[index] = null;
+                    //CheckCollider();
                     Destroy(currentCob.gameObject);
                     cobWasCooked=true;
                     GetComponent<AudioSource>().PlayOneShot(readySound);
@@ -59,7 +84,7 @@ public class PanScript : MonoBehaviour
 
     public void CobPlace(GameObject cob)
     {
-        if (cobs.Count <= cobPos.Length)
+        if (cobs.Count < 4 || anyNull() == true)
         {
             CornScript cornScript = cob.GetComponent<CornScript>();
 
@@ -74,14 +99,12 @@ public class PanScript : MonoBehaviour
                     } else if (cobs.Count < 4)
                     {
                         cobs.Add(cornScript);
-                    }
+                    } 
                 }
             } else if (cobs.Count < 4)
             {
                 cobs.Add(cornScript);
             }
-
-            Debug.Log(cobs.Count);
 
             int position = cobs.IndexOf(cornScript);
             cornScript.CurrentSide = CornScript.Side.Top;
@@ -92,10 +115,21 @@ public class PanScript : MonoBehaviour
             cobTransform.rotation = Quaternion.Euler(0f,0f,cobRot[position]);
             cob.GetComponent<PolygonCollider2D>().enabled = true;
             cobTransform.parent = this.transform;
-
-        } else 
-        
-        Destroy(cob);
+        } else Destroy(cob);
     }
+
+    bool anyNull()
+    {
+        bool isNull = true;
+        for(int x = 0; x < cobs.Count; x++)
+        {
+            if (cobs[x] == null)
+            {
+                isNull = true;
+            }
+        }
+        return isNull;
+    }
+
 
 }

@@ -75,18 +75,17 @@ public class GameManager : MonoBehaviour
                 currentCob = cob; 
             }
 
-            if (currentCob!=null && col.gameObject.tag == "Pan")
+            if (col!=null && currentCob!=null && col.gameObject.tag == "Pan")
             {
-                switch (CurrentState)
-                {
-                    case State.cobDragged:
-                        panScript.CobPlace(currentCob);
-                        currentCob = null;
-                        CurrentState = State.emptyHands;
-                        break;
-                    case State.butterDragged:
-                        break;
-                }
+                CurrentState = State.emptyHands;
+                panScript.CobPlace(currentCob);
+                currentCob = null;
+            }
+
+            if (col==null && currentCob!=null)
+            {
+                CurrentState = State.emptyHands;
+                Destroy(currentCob);
             }
         }
 
