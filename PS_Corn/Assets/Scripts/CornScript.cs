@@ -6,11 +6,16 @@ public class CornScript : MonoBehaviour
 {   
     GameManager myManager;
     Transform child;
-    float readinessTop;
-    float readinessSide1;
-    float readinessBottom;
-    float readinessSide2;
     float[] readiness = new float[4] {0, 0, 0, 0};
+    [SerializeField] Color rawCorn;
+    [SerializeField] Color cookedCorn;
+    float[] colorSteps;
+    public bool isPlaced = false;
+    Color currentColor;
+    Material[] mats;
+    public int sidesReady = 0;
+    [HideInInspector] public AudioSource audioController;
+    [SerializeField] AudioClip turnSound;
 
     #region StateMachine
     public enum Side
@@ -30,40 +35,72 @@ public class CornScript : MonoBehaviour
         set
         {
             _currentSide = value;
-            //TransitionStates(value);
+            CheckCob();
         }
     }
     #endregion
+    void Start()
+    {   
+        myManager = GameManager.FindInstance();
+        child = transform.GetChild(0);
+        mats = child.GetComponent<MeshRenderer>().materials;
+        audioController = GetComponent<AudioSource>();
+        StepCalculator(rawCorn, cookedCorn, myManager.cookTime);
+    }
+    void Update()
+    {
+        if (isPlaced==true)
+        {
+            RunStates();
+        }
+    }
 
     private void RunStates()
     {
         switch (CurrentSide)
         {
             case Side.Top:
-            readiness[0] += Time.deltaTime;
+            if (readiness[0] <= myManager.cookTime)
+            {
+                readiness[0] += Time.deltaTime;
+            }
+            Color topColor = Color.Lerp(rawCorn, cookedCorn, readiness[0]/myManager.cookTime);
+            mats[1].color = topColor;
                 break;
             case Side.Side1:
-            readiness[1] += Time.deltaTime;
+            if (readiness[1] <= myManager.cookTime)
+            {
+                readiness[1] += Time.deltaTime;
+            }
+            Color Side1Color = Color.Lerp(rawCorn, cookedCorn, readiness[1]/myManager.cookTime);
+            mats[0].color = Side1Color;
                 break;
             case Side.Bottom:
-            readiness[2] += Time.deltaTime;
+            if (readiness[2] <= myManager.cookTime)
+            {
+                readiness[2] += Time.deltaTime;
+            }
+            Color BottomColor = Color.Lerp(rawCorn, cookedCorn, readiness[2]/myManager.cookTime);
+            mats[3].color = BottomColor;
                 break;
             case Side.Side2:
-            readiness[3] += Time.deltaTime;
+            if (readiness[3] <= myManager.cookTime)
+            {
+                readiness[3] += Time.deltaTime;
+            }
+            Color Side2Color = Color.Lerp(rawCorn, cookedCorn, readiness[3]/myManager.cookTime);
+            mats[2].color = Side2Color;
                 break;
         }
     }
 
-    void Start()
-    {   
-        myManager = GameManager.FindInstance();
-        child = transform.GetChild(0);
-        CurrentSide = Side.Top;
-    }
-    void Update()
+    float[] StepCalculator(Color color1, Color color2, float time)
     {
-        RunStates();
-        CheckCob();
+        float rStep = (color1.r - color2.r)/time;
+        float gStep = (color1.g - color2.g)/time;
+        float bStep = (color1.b - color2.b)/time;
+        var colorSteps = new float[] { rStep, gStep, bStep };
+        return colorSteps;
     }
 
     void CheckCob()
@@ -72,46 +109,38 @@ public class CornScript : MonoBehaviour
         {
             if (readiness[i] >= myManager.cookTime)
             {
-                Debug.Log("the side is ready");
+                sidesReady++;
             }
         }
+
     }
-    
 
     public void CobTurn()
     {
+        audioController.PlayOneShot(turnSound);
+        Vector3 childRot = child.rotation.eulerAngles;
         child.rotation = Quaternion.Euler(
-            child.rotation.eulerAngles.x, 
-            child.rotation.eulerAngles.y + 90f, 
-            child.rotation.eulerAngles.z);
-    }
-
-    Side GetSide()
-    {
-        float yRot = transform.rotation.eulerAngles.y;
-        Side tempSide;
-        switch (yRot)
+            childRot.x, 
+            childRot.y, 
+            childRot.z+90f);
+        if (childRot.z >= 360)
         {
-            case float i when i >= 0 && i <= 90:
-                Debug.Log(yRot);
-                tempSide = Side.Top;
-                break; 
-            case float i when i > 90 && i <=180:
-                Debug.Log(yRot);
-                tempSide = Side.Side1;
+            child.rotation = Quaternion.Euler(childRot.x, childRot.y, 0);
+        }
+        switch (CurrentSide)
+        {
+            case Side.Top:
+                CurrentSide = Side.Side1;
                 break;
-            case float i when i > 180 && i <= 270:
-                Debug.Log(yRot);
-                tempSide = Side.Bottom;
+            case Side.Side1:
+                CurrentSide = Side.Bottom;
                 break;
-            case float i when i > 270 && i <= 360:
-                Debug.Log(yRot);
-                tempSide = Side.Side2;
+            case Side.Bottom:
+                CurrentSide = Side.Side2;
                 break;
-            default:
-                tempSide = Side.Top;
+            case Side.Side2:
+                CurrentSide = Side.Top;
                 break;
         }
-        return tempSide;
     }
 }

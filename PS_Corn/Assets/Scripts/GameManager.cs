@@ -6,7 +6,7 @@ public class GameManager : MonoBehaviour
 {
     GameObject currentCob;
     PanScript panScript;
-    public float cookTime = 15;
+    public float cookTime = 5f;
 
     #region SingletonDeclaration 
     private static GameManager instance; 
@@ -63,6 +63,7 @@ public class GameManager : MonoBehaviour
         if (Input.GetMouseButtonDown(0))
         {
             Collider2D col = Physics2D.OverlapPoint(Camera.main.ScreenToWorldPoint(Input.mousePosition));
+            //Debug.Log(col);
             if (col!=null && col.gameObject.tag == "Basket" && currentCob==null) 
             {
                 CurrentState = State.cobDragged;
@@ -91,7 +92,6 @@ public class GameManager : MonoBehaviour
             if (col!=null & col.gameObject.tag == "Corn")
             {
                 col.GetComponent<CornScript>().CobTurn();
-                Debug.Log("hit");
             }
         }
 
