@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PanScript : MonoBehaviour
 {
@@ -29,21 +30,29 @@ public class PanScript : MonoBehaviour
     [SerializeField] float[] cobRot;
     List<CornScript> cobs = new List<CornScript>();
     [SerializeField] AudioClip readySound;
+    [SerializeField] Text scoreText;
+    float score;
+
 
     bool cobWasCooked = false;
 
-    void Update()
+    public void DestroyCob()
     {
         for(int x = 0; x < cobs.Count; x++)
         {
-            CornScript currentCob = cobs[x];
-            if (currentCob.sidesReady >= 4)
+            if (cobs[x] != null)
             {
-                int index = cobs.IndexOf(currentCob);
-                cobs[index] = null;
-                Destroy(currentCob.gameObject);
-                cobWasCooked=true;
-                GetComponent<AudioSource>().PlayOneShot(readySound);
+                CornScript currentCob = cobs[x];
+                if (currentCob.sidesReady >= 4)
+                {
+                    int index = cobs.IndexOf(currentCob);
+                    cobs[index] = null;
+                    Destroy(currentCob.gameObject);
+                    cobWasCooked=true;
+                    GetComponent<AudioSource>().PlayOneShot(readySound);
+                    score++;
+                    scoreText.text =score.ToString();
+                }
             }
         }
     }
@@ -61,10 +70,18 @@ public class PanScript : MonoBehaviour
                     if (cobs[x] == null)
                     {
                         cobs[x] = cornScript;
+                        break;
+                    } else if (cobs.Count < 4)
+                    {
+                        cobs.Add(cornScript);
                     }
-                    else cobs.Add(cornScript);
                 }
-            } else cobs.Add(cornScript);
+            } else if (cobs.Count < 4)
+            {
+                cobs.Add(cornScript);
+            }
+
+            Debug.Log(cobs.Count);
 
             int position = cobs.IndexOf(cornScript);
             cornScript.CurrentSide = CornScript.Side.Top;
@@ -79,15 +96,6 @@ public class PanScript : MonoBehaviour
         } else 
         
         Destroy(cob);
-    }
-
-    void AvailabilityCheck()
-    {
-    
-    }
-    public void ButterPlace()
-    {
-        Debug.Log("butter placed");
     }
 
 }

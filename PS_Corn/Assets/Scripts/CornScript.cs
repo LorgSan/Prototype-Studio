@@ -5,6 +5,7 @@ using UnityEngine;
 public class CornScript : MonoBehaviour
 {   
     GameManager myManager;
+    PanScript myPan;
     Transform child;
     float[] readiness = new float[4] {0, 0, 0, 0};
     [SerializeField] Color rawCorn;
@@ -35,13 +36,13 @@ public class CornScript : MonoBehaviour
         set
         {
             _currentSide = value;
-            CheckCob();
         }
     }
     #endregion
     void Start()
     {   
         myManager = GameManager.FindInstance();
+        myPan = PanScript.FindInstance();
         child = transform.GetChild(0);
         mats = child.GetComponent<MeshRenderer>().materials;
         audioController = GetComponent<AudioSource>();
@@ -105,14 +106,20 @@ public class CornScript : MonoBehaviour
 
     void CheckCob()
     {
+        sidesReady = 0;
         for(int i = 0; i < readiness.Length; i++)
         {
-            if (readiness[i] >= myManager.cookTime)
+            if (readiness[i] > myManager.cookTime)
             {
                 sidesReady++;
+                
             }
         }
 
+        if (sidesReady >= 4)
+        {
+            myPan.DestroyCob();
+        }
     }
 
     public void CobTurn()
@@ -142,5 +149,6 @@ public class CornScript : MonoBehaviour
                 CurrentSide = Side.Top;
                 break;
         }
+        CheckCob();
     }
 }
