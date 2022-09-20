@@ -52,7 +52,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "RightEye",
+                    "action": "LeftEye",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -63,7 +63,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "LeftEye",
+                    "action": "RightEye",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
