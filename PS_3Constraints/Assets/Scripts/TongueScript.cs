@@ -6,38 +6,51 @@ public class TongueScript : MonoBehaviour
 {
     public Transform target, tongueTipPos, tongueChildObj;
 
-    public float speed = 50.0f;
+    public float speed = 300f;
 
     private Vector3 initialScale;
     
     // Start is called before the first frame update
     void Start()
     {
+        //Saving the initial scale of the tongueChildObj for later use
         initialScale = tongueChildObj.transform.localScale;
     }
 
     void Update()
     {
-        float angle = Mathf.Atan2(target.position.y - transform.position.y, target.position.x -transform.position.x ) * Mathf.Rad2Deg;
-        Quaternion targetRotation = Quaternion.Euler(new Vector3(0, 0, angle));
-        transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, speed * Time.deltaTime);
+        //Checking if the target is not null (Is present in the scene and not destroyed)
+        if(target != null){
 
-        ScaleTongue();
-    }
+            //Here calulating the angle and rotating the tongue
+            float angle = Mathf.Atan2(target.position.y - transform.position.y, target.position.x -transform.position.x ) * Mathf.Rad2Deg;
+            Quaternion targetRotation = Quaternion.Euler(new Vector3(0, 0, angle));
+            transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, speed * Time.deltaTime);
 
-
-    void ScaleTongue()
-    {
-        //Scale the tongueChildObj to the distance between the tongueTipPos and the target
-        float distance = Vector3.Distance(tongueTipPos.position, target.position);
-        
-        Debug.Log(distance);
-
-        //Keep scaling the tongueChildObj until the distance is less than 0.1
-        if (distance > 0.1f)
-        {
-            tongueChildObj.transform.localScale += new Vector3(0, 0.001f, 0);
+            //if the target is in the range of the tongue
+            if ((target.position.x > -6.5f && target.position.x < 6.5f) && (target.position.y > -1.5f && target.position.y < 3.6f))
+            {
+                ScaleTongue();
+            }
         }
     }
 
+    void ScaleTongue()
+    {
+        //Calculating the distance between the tongue tip and the target
+        float distance = Vector3.Distance(tongueTipPos.position, target.position);
+        Debug.Log(distance);
+
+        //Scaling the tongue till the distance is greater than 0.2f
+        if (distance > 0.2f)
+        {
+            tongueChildObj.transform.localScale += new Vector3(0, 0.1f, 0);
+        }
+        else
+        {
+            //Destroy the target and reset the tongue
+            GameObject.Destroy(target.gameObject);
+            tongueChildObj.transform.localScale = initialScale;
+        }
+    }
 }
