@@ -35,7 +35,6 @@ public class FrogScript : MonoBehaviour
         ControlsSetup();
         rightEyeCollider = rightEye.GetComponent<CircleCollider2D>();
         leftEyeCollider = leftEye.GetComponent<CircleCollider2D>();
-        flyScript = FlyScript.FindInstance();
         rightEyeSprite = rightEye.GetChild(0);
         leftEyeSprite = leftEye.GetChild(0);
 
@@ -73,7 +72,7 @@ public class FrogScript : MonoBehaviour
 
     void CheckFly()
     {
-        if (flyScript.RightEye == true && flyScript.LeftEye == true)
+        if (FlyScript.Instance.RightEye == true && FlyScript.Instance.LeftEye == true)
         {
             Debug.Log("yeah double hit");
         }
