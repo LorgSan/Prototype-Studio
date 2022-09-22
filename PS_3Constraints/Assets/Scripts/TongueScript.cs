@@ -48,9 +48,19 @@ public class TongueScript : MonoBehaviour
         }
         else
         {
+            ResetTonguePos();
+        }
+    }
+
+    //Called if the distance between the tongue tip and the target is less than 0.2f OR if the tip of the tongue collides with the fly
+    public void ResetTonguePos()
+    {
+        if(target != null)
+        {
             //Destroy the target and reset the tongue
             GameObject.Destroy(target.gameObject);
             tongueChildObj.transform.localScale = initialScale;
         }
     }
+    
 }
