@@ -17,7 +17,7 @@ public class TongueTipTrigger : MonoBehaviour
     {
         if (collision.gameObject.tag == "Fly")
         {
-            tongueScript.ResetTonguePos();
+            TongueScript.Instance.collisionHappened = true;
         }
     }
 }

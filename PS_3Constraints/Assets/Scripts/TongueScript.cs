@@ -64,6 +64,6 @@ public class TongueScript : GenericSingletonClass<TongueScript>
     {
         tongueChildObj.transform.localScale = initialScale;
         //tongueChildObj.transform.position = new Vector2 (-0.25f, 0);
-        transform.rotation = initialRotation;
+        //transform.rotation = initialRotation;
     }
 }

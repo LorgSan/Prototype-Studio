@@ -15,8 +15,11 @@ public class FlyMovementScript : MonoBehaviour
     Vector3 currentTarget;
     [SerializeField] float Speed;
     [SerializeField] AudioClip slap;
+    [SerializeField] Sprite killSprite;
+    SpriteRenderer sr;
     private void Start()
     {
+        sr = GetComponent<SpriteRenderer>();
         DirectMovementSetup();
     }
 
@@ -36,11 +39,12 @@ public class FlyMovementScript : MonoBehaviour
 
     }
 
-    public void AudioStop()
+    public void KillFly()
     {
         AudioSource audioSource = GetComponent<AudioSource>();
         audioSource.Stop();
         audioSource.PlayOneShot(slap);
+        sr.sprite = killSprite;
     }
 
     void CircleMovement()
@@ -54,6 +58,9 @@ public class FlyMovementScript : MonoBehaviour
     void DirectMovement(Vector3 target)
     {
         float scaleSpeed = Speed * Time.deltaTime;
+        float angle = Mathf.Atan2(target.y - transform.position.y, target.x -transform.position.x ) * Mathf.Rad2Deg;
+        Quaternion targetRotation = Quaternion.Euler(new Vector3(0, 0, angle));
+        transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, 1000f * Time.deltaTime);
         Vector3 newVector = Vector3.MoveTowards(transform.position, target, scaleSpeed);
         transform.position = newVector;
         if (transform.position == target)
@@ -75,6 +82,7 @@ public class FlyMovementScript : MonoBehaviour
     IEnumerator Circle()
     {
         _centre = transform.position;
+        
         float time = Random.Range(1f, 4f);
         DoCircle = true;
         yield return new WaitForSeconds(time);

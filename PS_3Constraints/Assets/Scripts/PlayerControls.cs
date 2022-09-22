@@ -62,6 +62,15 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""NextScene"",
+                    ""type"": ""Button"",
+                    ""id"": ""c252c28b-e975-49d4-bd0c-2816615ba6e9"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -119,6 +128,17 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                     ""action"": ""Catch"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""1d0018fb-0460-4d07-a7b5-8b2a644f720c"",
+                    ""path"": ""<Gamepad>/buttonSouth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""NextScene"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -131,6 +151,7 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
         m_Gameplay_RightEye = m_Gameplay.FindAction("RightEye", throwIfNotFound: true);
         m_Gameplay_LeftEye = m_Gameplay.FindAction("LeftEye", throwIfNotFound: true);
         m_Gameplay_Catch = m_Gameplay.FindAction("Catch", throwIfNotFound: true);
+        m_Gameplay_NextScene = m_Gameplay.FindAction("NextScene", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -194,6 +215,7 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
     private readonly InputAction m_Gameplay_RightEye;
     private readonly InputAction m_Gameplay_LeftEye;
     private readonly InputAction m_Gameplay_Catch;
+    private readonly InputAction m_Gameplay_NextScene;
     public struct GameplayActions
     {
         private @PlayerControls m_Wrapper;
@@ -202,6 +224,7 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
         public InputAction @RightEye => m_Wrapper.m_Gameplay_RightEye;
         public InputAction @LeftEye => m_Wrapper.m_Gameplay_LeftEye;
         public InputAction @Catch => m_Wrapper.m_Gameplay_Catch;
+        public InputAction @NextScene => m_Wrapper.m_Gameplay_NextScene;
         public InputActionMap Get() { return m_Wrapper.m_Gameplay; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -223,6 +246,9 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                 @Catch.started -= m_Wrapper.m_GameplayActionsCallbackInterface.OnCatch;
                 @Catch.performed -= m_Wrapper.m_GameplayActionsCallbackInterface.OnCatch;
                 @Catch.canceled -= m_Wrapper.m_GameplayActionsCallbackInterface.OnCatch;
+                @NextScene.started -= m_Wrapper.m_GameplayActionsCallbackInterface.OnNextScene;
+                @NextScene.performed -= m_Wrapper.m_GameplayActionsCallbackInterface.OnNextScene;
+                @NextScene.canceled -= m_Wrapper.m_GameplayActionsCallbackInterface.OnNextScene;
             }
             m_Wrapper.m_GameplayActionsCallbackInterface = instance;
             if (instance != null)
@@ -239,6 +265,9 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                 @Catch.started += instance.OnCatch;
                 @Catch.performed += instance.OnCatch;
                 @Catch.canceled += instance.OnCatch;
+                @NextScene.started += instance.OnNextScene;
+                @NextScene.performed += instance.OnNextScene;
+                @NextScene.canceled += instance.OnNextScene;
             }
         }
     }
@@ -249,5 +278,6 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
         void OnRightEye(InputAction.CallbackContext context);
         void OnLeftEye(InputAction.CallbackContext context);
         void OnCatch(InputAction.CallbackContext context);
+        void OnNextScene(InputAction.CallbackContext context);
     }
 }

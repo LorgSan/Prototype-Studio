@@ -99,6 +99,7 @@ public class FrogScript : GenericSingletonClass<FlyScript>
 
     void RestartScene()
     {
+        Destroy(GameManager.Instance);
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
@@ -107,7 +108,8 @@ public class FrogScript : GenericSingletonClass<FlyScript>
         if(fly.RightEye == true && fly.LeftEye == true)
         {
             StartCoroutine("SpriteChange");
-            score ++;
+            GameManager.Instance.highScore++;
+            score++;
             scoreText.text = score.ToString();
         }
     }
@@ -117,7 +119,7 @@ public class FrogScript : GenericSingletonClass<FlyScript>
         sr.sprite = catchSprite;
         FlyMovementScript flyMove = fly.gameObject.GetComponent<FlyMovementScript>();
         flyMove.allowedToMove = false;
-        flyMove.AudioStop();
+        flyMove.KillFly();
         tongue.catchHappened = true;
         yield return new WaitForSeconds(0.5f);
         sr.sprite = normalSprite;
