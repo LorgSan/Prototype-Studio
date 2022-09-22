@@ -9,6 +9,21 @@ public class EndSceneScript : GenericSingletonClass<EndSceneScript>
     public Text headerText;
     public Text score;
     public Text description;
+    PlayerControls controls;
+
+    public override void Awake()
+    {
+        base.Awake();
+        controls = new PlayerControls();
+        controls.Gameplay.RestartScene.performed += ctx => RestartScene();
+    }
+
+    void RestartScene()
+    {
+        Destroy(GameManager.Instance);
+        SceneManager.LoadScene("SampleScene");
+    }
+
     void Start()
     {
         if (GameManager.Instance.highScore >= 10)

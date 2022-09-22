@@ -42,9 +42,9 @@ public class FlyMovementScript : MonoBehaviour
     public void KillFly()
     {
         AudioSource audioSource = GetComponent<AudioSource>();
+        sr.sprite = killSprite;
         audioSource.Stop();
         audioSource.PlayOneShot(slap);
-        sr.sprite = killSprite;
     }
 
     void CircleMovement()

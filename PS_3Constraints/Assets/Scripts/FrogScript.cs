@@ -42,6 +42,8 @@ public class FrogScript : GenericSingletonClass<FlyScript>
     [SerializeField] Sprite catchSprite;
     [SerializeField] AudioClip ribbit;
     [SerializeField] TongueScript tongue;
+
+    bool flyInProcess = false;
  
     public override void Awake()
     {
@@ -105,9 +107,10 @@ public class FrogScript : GenericSingletonClass<FlyScript>
 
     void CheckFly()
     {
-        if(fly.RightEye == true && fly.LeftEye == true)
+        if(fly.RightEye == true && fly.LeftEye == true && flyInProcess == false) 
         {
             StartCoroutine("SpriteChange");
+            flyInProcess = true;
             GameManager.Instance.highScore++;
             score++;
             scoreText.text = score.ToString();
@@ -123,6 +126,7 @@ public class FrogScript : GenericSingletonClass<FlyScript>
         tongue.catchHappened = true;
         yield return new WaitForSeconds(0.5f);
         sr.sprite = normalSprite;
+        flyInProcess = false;
         SpawnNewFly();
     }
 
