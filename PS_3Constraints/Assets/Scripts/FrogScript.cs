@@ -2,8 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
-public class FrogScript : MonoBehaviour
+public class FrogScript : GenericSingletonClass<FlyScript>
 {
     PlayerControls controls;
     Vector2 rightEyeMove;
@@ -18,8 +19,6 @@ public class FrogScript : MonoBehaviour
     [SerializeField] Transform leftEyeTarget;
     [SerializeField] Transform rightEye;
     [SerializeField] Transform leftEye;
-
-    FlyScript flyScript;
     CircleCollider2D rightEyeCollider;
     CircleCollider2D leftEyeCollider;
     Vector3 rightEyePoint;
@@ -29,12 +28,30 @@ public class FrogScript : MonoBehaviour
     Transform rightEyeSprite;
     Transform leftEyeSprite;
 
-    void Awake()
+    [SerializeField] Text scoreText;
+    float score;
+    public FlyScript fly;
+    float xMin;
+    float xMax;
+    float yMin;
+    float yMax;
+
+    [Header("Sprite Reference")]
+    SpriteRenderer sr;
+    Sprite normalSprite;
+    [SerializeField] Sprite catchSprite;
+    [SerializeField] AudioClip ribbit;
+    [SerializeField] TongueScript tongue;
+ 
+    public override void Awake()
     {
+        base.Awake();
         controls = new PlayerControls();
         ControlsSetup();
         rightEyeCollider = rightEye.GetComponent<CircleCollider2D>();
         leftEyeCollider = leftEye.GetComponent<CircleCollider2D>();
+        sr = GetComponent<SpriteRenderer>();
+        normalSprite = sr.sprite;
         rightEyeSprite = rightEye.GetChild(0);
         leftEyeSprite = leftEye.GetChild(0);
 
@@ -50,17 +67,32 @@ public class FrogScript : MonoBehaviour
         controls.Gameplay.Catch.performed += ctx => CheckFly(); 
     }
 
+        private void Start()
+    {
+        var spriteSize = rightEyeTarget.GetComponent<SpriteRenderer>().bounds.size.x * .5f; // Working with a simple box here, adapt to you necessity
+
+        var cam = Camera.main;// Camera component to get their size, if this change in runtime make sure to update values
+        var camHeight = cam.orthographicSize;
+        var camWidth = cam.orthographicSize * cam.aspect;
+
+        yMin = -camHeight + spriteSize; // lower bound
+        yMax = camHeight - spriteSize; // upper bound
+        
+        xMin = -camWidth + spriteSize; // left bound
+        xMax = camWidth - spriteSize; // right bound 
+    }
+
     void Update()
     {
 
         EyePosCalc();
-        float clampedRightX = Mathf.Clamp(leftEyeMove.x, -6, 7);
-        float clampedRightY = Mathf.Clamp(leftEyeMove.y, -1f, 8);
+        float clampedRightX = Mathf.Clamp(leftEyeMove.x, xMin, xMax);
+        float clampedRightY = Mathf.Clamp(leftEyeMove.y, yMin, yMax);
         Vector2 mR = new Vector2(clampedRightX, clampedRightY) * Time.deltaTime * speed;
 
         rightEyeTarget.Translate(mR, Space.World);
-        float clampedLeftX = Mathf.Clamp(rightEyeMove.x, -6, 7);
-        float clampedLeftY = Mathf.Clamp(rightEyeMove.y, -1f, 8);
+        float clampedLeftX = Mathf.Clamp(rightEyeMove.x, xMin, xMax);
+        float clampedLeftY = Mathf.Clamp(rightEyeMove.y, yMin, yMax);
         Vector2 mL = new Vector2(clampedLeftX, clampedLeftY) * Time.deltaTime * speed;
         leftEyeTarget.Translate(mL, Space.World);
     }
@@ -72,10 +104,49 @@ public class FrogScript : MonoBehaviour
 
     void CheckFly()
     {
-        if (FlyScript.Instance.RightEye == true && FlyScript.Instance.LeftEye == true)
+        if(fly.RightEye == true && fly.LeftEye == true)
         {
-            Debug.Log("yeah double hit");
+            StartCoroutine("SpriteChange");
+            score ++;
+            scoreText.text = score.ToString();
         }
+    }
+
+    IEnumerator SpriteChange()
+    {
+        sr.sprite = catchSprite;
+        FlyMovementScript flyMove = fly.gameObject.GetComponent<FlyMovementScript>();
+        flyMove.allowedToMove = false;
+        flyMove.AudioStop();
+        tongue.catchHappened = true;
+        yield return new WaitForSeconds(0.5f);
+        sr.sprite = normalSprite;
+        SpawnNewFly();
+    }
+
+    void SpawnNewFly()
+    {
+        GameObject newFly = Instantiate(Resources.Load("Fly") as GameObject);
+        int RandomDecide = Random.Range (0, 3);
+        switch (RandomDecide)
+        {
+            case 0:
+                    newFly.transform.position = new Vector2 (-7.5f, Random.Range(-1.5f, 3.6f));
+                break;
+            case 1:
+                    newFly.transform.position = new Vector2 (7.5f, Random.Range(-1.5f, 3.6f));
+                break;
+            case 2:
+                    newFly.transform.position = new Vector2 (Random.Range(-7.5f, 7.5f), 5.5f);
+                break;
+        }
+        FlyScript oldFly = fly;
+        fly = newFly.GetComponent<FlyScript>();
+        GetComponent<AudioSource>().PlayOneShot(ribbit);
+        tongue.target = newFly.transform;
+        tongue.catchHappened = false;
+        tongue.ResetTongue();
+        Destroy(oldFly.gameObject);
     }
 
     void OnEnable()
