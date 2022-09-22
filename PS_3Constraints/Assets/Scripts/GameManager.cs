@@ -23,7 +23,7 @@ public class GameManager : GenericSingletonClass<GameManager>
         if (newScene == false)
         {
             timer -= Time.deltaTime;
-            timerText.text = timer.ToString();
+            timerText.text = timer.ToString("F0");
             if (timer <= 0.0f)
             {
                 timerEnded();

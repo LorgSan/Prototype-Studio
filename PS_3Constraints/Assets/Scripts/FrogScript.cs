@@ -4,11 +4,11 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class FrogScript : GenericSingletonClass<FlyScript>
+public class FrogScript : GenericSingletonClass<FrogScript>
 {
     PlayerControls controls;
-    Vector2 rightEyeMove;
-    Vector2 leftEyeMove;
+    public Vector2 rightEyeMove;
+    public Vector2 leftEyeMove;
 
     [Header("Movement")]
     [SerializeField] float speed;
@@ -105,7 +105,7 @@ public class FrogScript : GenericSingletonClass<FlyScript>
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
-    void CheckFly()
+    public void CheckFly()
     {
         if(fly.RightEye == true && fly.LeftEye == true && flyInProcess == false) 
         {
