@@ -24,11 +24,19 @@ public class GameManager : MonoBehaviour
         UpdatePrompt();
     }
 
+    [SerializeField] GameObject finisher;
+
     void UpdatePrompt()
     {
+        if (promptCounter == 4)
+        {
+            finisher.SetActive(true);
+        } else {
         prompt.text = prompts[promptCounter];
         prompt.text = prompt.text.Replace("\\n", "\n");
         inputField.text = startText;
+        replaceKey = startText;
+        }
     }
     
     void OnTriggerEnter2D(Collider2D col)
@@ -50,7 +58,8 @@ public class GameManager : MonoBehaviour
     {
         if (Input.GetMouseButtonUp(0) && inField == true)
         {
-            Debug.Log("Collided");
+            inField = false;
+            //Debug.Log("button in");
             string value;
             string addition = current.transform.GetChild(1).GetComponent<InputField>().text;
             if (replaceKey == "// Your code goes here")
@@ -62,6 +71,7 @@ public class GameManager : MonoBehaviour
                 } else 
                 {
                     value = inputField.text.Replace(replaceKey, replaceKey + addition);
+                    Debug.Log("normal replace done" + replaceKey + value);
                 }
             replaceKey = value;
             inputField.text = value;
@@ -69,25 +79,21 @@ public class GameManager : MonoBehaviour
             Destroy(current);
         }
 
-        if (Input.GetKey(KeyCode.R))
+        if (Input.GetMouseButton(1))
         {
-            SceneManager.LoadScene(SceneManager.GetActiveScene().ToString());
+            SceneManager.LoadScene("GameScene");
         }
     }
 
     public void Empty()
     {
         inputField.text = startText;
-    }
-
-    public bool isEven (int numberToCheck)
-    {
-        return numberToCheck % 2 == 0;
+        replaceKey = startText;
     }
 
     public void Run()
     {
-        Debug.Log(results[promptCounter] + inputField.text);
+        //Debug.Log(results[promptCounter] + inputField.text);
         if (inputField.text == results[promptCounter])
         {
             output.text = output.text + outputs[promptCounter];
@@ -95,31 +101,17 @@ public class GameManager : MonoBehaviour
             promptCounter++;
             UpdatePrompt();
         } else {
-            Debug.Log(errorOutput.Length);
+            //Debug.Log(errorOutput.Length);
             output.text = output.text + errorOutput[Random.Range(0, errorOutput.Length-1)];
             output.text = output.text.Replace("\\n", "\n");
         }
     }
 
-    public string[] prompts = new string[] {
-        "public int sum( int x, int y) {",
-        "public int maximum(Integer[] list) {",
-        "",
-        "",
-        ""
-    };
+    public string[] prompts = new string[] {};
 
-    public string[] results = new string[] {
-        "return(x+y);",
-        ""
-    };
+    public string[] results = new string[] {};
 
-    public string[] outputs = new string[] {
+    public string[] outputs = new string[] {};
 
-    };
-
-    public string[] errorOutput = new string[] {
-        "try again, you can do it!",
-        "hmm, did you check the semicolon?",
-    };
+    public string[] errorOutput = new string[] {};
 }
