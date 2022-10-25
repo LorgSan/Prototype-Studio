@@ -80,6 +80,11 @@ public class GameManager : MonoBehaviour
         inputField.text = startText;
     }
 
+    public bool isEven (int numberToCheck)
+    {
+        return numberToCheck % 2 == 0;
+    }
+
     public void Run()
     {
         Debug.Log(results[promptCounter] + inputField.text);
