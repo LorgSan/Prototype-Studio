@@ -8,7 +8,7 @@ public class Domino_AcceleratorScript : AcceleratorScript
     bool hasCollided;
     AudioManager am;
     MeshRenderer mr;
-    [SerializeField] Material matReveal;
+    public Material matReveal;
 
     // Start is called before the first frame update
     protected override void Start()
@@ -24,6 +24,7 @@ public class Domino_AcceleratorScript : AcceleratorScript
         if(!hasCollided && collision.gameObject.tag != "Floor")
         {
             hasCollided = true;
+            //collision.gameObject.GetComponent<Rigidbody>().AddForce(collision.GetContact(0).normal, ForceMode.Impulse);
             rb.AddForce(collision.GetContact(0).normal, ForceMode.Impulse);
             mr.material = matReveal;
             am.PlayDing();
