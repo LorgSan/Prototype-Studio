@@ -29,15 +29,16 @@ public class AudioManager : MonoBehaviour
     [SerializeField] AudioClip ding;
     [SerializeField] float starterPitch;
     [SerializeField] float step;
-
+    [SerializeField] AudioClip[] dominoSounds; 
     void Start()
     {
-        audioSource.pitch = starterPitch;
+        //audioSource.pitch = starterPitch;
     }
 
-    public void PlayDing()
+    public void PlayDing(AudioSource audioS)
     {
-        audioSource.pitch += step;
+        //audioSource.pitch += step;
+        audioS.PlayOneShot(dominoSounds[Random.Range(0,dominoSounds.Length-1)]);
         audioSource.PlayOneShot(ding);
     }
 }

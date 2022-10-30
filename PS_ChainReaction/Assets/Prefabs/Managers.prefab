@@ -48,6 +48,18 @@ MonoBehaviour:
   ding: {fileID: 8300000, guid: 1d305da6c19a50d46a558488299ef862, type: 3}
   starterPitch: 0.5
   step: 0.1
+  dominoSounds:
+  - {fileID: 8300000, guid: f0cd6d6803120bd478c929c409a3bd61, type: 3}
+  - {fileID: 8300000, guid: c8865f67110a39c44ab53478c28a6eec, type: 3}
+  - {fileID: 8300000, guid: 522a4add0d9f52a4bb7e867cd733a5fc, type: 3}
+  - {fileID: 8300000, guid: 24b403991cd681645bccac8548412d7f, type: 3}
+  - {fileID: 8300000, guid: 521f430485b452348be1fb043c9b27b9, type: 3}
+  - {fileID: 8300000, guid: 10bf30cbf4a2e5f44996b5a5d41141e9, type: 3}
+  - {fileID: 8300000, guid: a592102965483c8408a3f7b55923a07a, type: 3}
+  - {fileID: 8300000, guid: 1388d8d7b13856545b461796444b53e5, type: 3}
+  - {fileID: 8300000, guid: 1b51a206ded289e498508f4c47c73160, type: 3}
+  - {fileID: 8300000, guid: 763c0c00480c0e440837696d88a2d025, type: 3}
+  - {fileID: 8300000, guid: 0b6b6a31fc2cf5f4db4bc2c3d5946ee2, type: 3}
 --- !u!82 &510493082201248448
 AudioSource:
   m_ObjectHideFlags: 0
@@ -60,7 +72,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: 1d305da6c19a50d46a558488299ef862, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 1
+  m_Volume: 0.491
   m_Pitch: 1
   Loop: 0
   Mute: 0

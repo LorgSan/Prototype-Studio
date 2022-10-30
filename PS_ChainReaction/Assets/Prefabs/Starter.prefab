@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 9059491932267167082}
   m_Layer: 0
   m_Name: Starter
-  m_TagString: Untagged
+  m_TagString: Starter
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -57,6 +57,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   thrust: 15
   rb: {fileID: 9059491932267167082}
+  direction: 0
 --- !u!23 &9059491932267167080
 MeshRenderer:
   m_ObjectHideFlags: 0

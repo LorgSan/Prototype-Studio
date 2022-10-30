@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class LineSpawner : MonoBehaviour
-{
+{   
     LineRenderer line;
-    Vector3[] positions;
+    [HideInInspector] public Vector3[] positions;
     [SerializeField] GameObject dominoPrefab;
-    [SerializeField] Material toGiveDominoes;
+    [SerializeField] Material[] toGiveDominoes;
+    [SerializeField] string nextScene = "Scene2";
     Quaternion tempRot;
 
     void Start()
@@ -19,7 +20,7 @@ public class LineSpawner : MonoBehaviour
         {
             GameObject newgo = Instantiate(dominoPrefab);
             newgo.transform.position = positions[i];
-            newgo.GetComponent<Domino_AcceleratorScript>().matReveal = toGiveDominoes;
+            newgo.GetComponent<Domino_AcceleratorScript>().matReveal = toGiveDominoes[i];
             if (i+1 < positions.Length)
             {
                 newgo.transform.LookAt(positions[i+1]);
@@ -30,8 +31,12 @@ public class LineSpawner : MonoBehaviour
                 }
             } else {
                 newgo.transform.rotation = tempRot;
-                Debug.Log(tempRot);
+                Domino_AcceleratorScript lastDomino = newgo.transform.GetComponent<Domino_AcceleratorScript>();
+                lastDomino.isTheLast = true;
+                lastDomino.nextSceneName = nextScene;
             }
         }
     }
+
+    
 }

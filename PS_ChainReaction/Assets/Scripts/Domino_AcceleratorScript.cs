@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Domino_AcceleratorScript : AcceleratorScript
 {
@@ -8,7 +9,10 @@ public class Domino_AcceleratorScript : AcceleratorScript
     bool hasCollided;
     AudioManager am;
     MeshRenderer mr;
+    AudioSource audioSource;
     public Material matReveal;
+    [HideInInspector] public bool isTheLast = false;
+    [HideInInspector] public string nextSceneName;
 
     // Start is called before the first frame update
     protected override void Start()
@@ -17,6 +21,12 @@ public class Domino_AcceleratorScript : AcceleratorScript
         rb = GetComponent<Rigidbody>();
         mr = GetComponent<MeshRenderer>();
         col = GetComponent<BoxCollider>();
+        audioSource = GetComponent<AudioSource>();
+    }
+
+    protected override void Update()
+    {
+        
     }
 
     void OnCollisionEnter(Collision collision)
@@ -27,8 +37,23 @@ public class Domino_AcceleratorScript : AcceleratorScript
             //collision.gameObject.GetComponent<Rigidbody>().AddForce(collision.GetContact(0).normal, ForceMode.Impulse);
             rb.AddForce(collision.GetContact(0).normal, ForceMode.Impulse);
             mr.material = matReveal;
-            am.PlayDing();
+            am.PlayDing(audioSource);
+            if (isTheLast)
+            {
+                Invoke("NextScene", 3);
+            }
         }
+
+        if (collision.gameObject.tag == "Starter")
+        {
+            //Debug.Log("collided with the starter");
+            collision.gameObject.GetComponent<Rigidbody>().mass = 0;
+        }
+    }
+
+    void NextScene()
+    {
+        SceneManager.LoadScene(nextSceneName);
     }
 
     

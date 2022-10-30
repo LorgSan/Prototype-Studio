@@ -19,7 +19,23 @@ public class AcceleratorScript : MonoBehaviour
     protected virtual void Start()
     {
         rb = GetComponent<Rigidbody>();
-       Invoke("StartForce", 0.5f);
+       //Invoke("StartForce", 0.5f);
+    }
+
+    protected virtual void Update()
+    {
+        if (Input.GetMouseButtonDown(0))
+        {
+            StartForce();
+        }
+    }
+
+    void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.tag == "Domino")
+        {
+             Destroy(gameObject);
+        }
     }
 
     void StartForce()
@@ -40,13 +56,5 @@ public class AcceleratorScript : MonoBehaviour
             break;
         }
         
-    }
-
-    void Update()
-    {
-        if (gameObject.name == "Starter")
-        {
-
-        }
     }
 }
