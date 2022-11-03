@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class WallRotate : MonoBehaviour
 {
+
     IEnumerator RotateMe(Vector3 byAngles, float inTime) 
     {    
         var fromAngle = transform.rotation;
@@ -15,12 +16,11 @@ public class WallRotate : MonoBehaviour
         }
         transform.rotation = toAngle;
     }
-    public void Rotate (bool goingBack) {
-    
+    public void Rotate (bool goingBack)
+    {
         if (goingBack)
         {
             StartCoroutine(RotateMe(Vector3.up * -90, 0.8f));
         } else StartCoroutine(RotateMe(Vector3.up * 90, 0.8f));
-
    }
  }

@@ -62,7 +62,7 @@ public class MazeRenderer : MonoBehaviour
                 if (cell.HasFlag(WallState.UP))
                 {
                     var topWall = Instantiate(wallPrefab, transform) as Transform;
-                    topWall.localPosition = position + new Vector3(0, 0, size / 2);
+                    topWall.localPosition = position + new Vector3(0, 0, size);
                     topWall.localScale = new Vector3(size, topWall.localScale.y, topWall.localScale.z);
                     if (!IsOuterWall(i, j))
                     {
@@ -73,7 +73,7 @@ public class MazeRenderer : MonoBehaviour
                 if (cell.HasFlag(WallState.LEFT))
                 {
                     var leftWall = Instantiate(wallPrefab, transform) as Transform;
-                    leftWall.localPosition = position + new Vector3(-size / 2, 0, 0);
+                    leftWall.localPosition = position + new Vector3(-size, 0, 0);
                     leftWall.localScale = new Vector3(size, leftWall.localScale.y, leftWall.localScale.z);
                     leftWall.eulerAngles = new Vector3(0, 90, 0);
                     if (!IsOuterWall(i, j))
@@ -87,7 +87,7 @@ public class MazeRenderer : MonoBehaviour
                     if (cell.HasFlag(WallState.RIGHT))
                     {
                         var rightWall = Instantiate(wallPrefab, transform) as Transform;
-                        rightWall.localPosition = position + new Vector3(+size / 2, 0, 0);
+                        rightWall.localPosition = position;
                         rightWall.localScale = new Vector3(size, rightWall.localScale.y, rightWall.localScale.z);
                         rightWall.eulerAngles = new Vector3(0, 90, 0);
                         if (!IsOuterWall(i, j))
@@ -102,7 +102,7 @@ public class MazeRenderer : MonoBehaviour
                     if (cell.HasFlag(WallState.DOWN))
                     {
                         var bottomWall = Instantiate(wallPrefab, transform) as Transform;
-                        bottomWall.localPosition = position + new Vector3(0, 0, -size / 2);
+                        bottomWall.localPosition = position;
                         bottomWall.localScale = new Vector3(size, bottomWall.localScale.y, bottomWall.localScale.z);
                         if (!IsOuterWall(i, j))
                         {
@@ -135,11 +135,5 @@ public class MazeRenderer : MonoBehaviour
             return true;
         }
         else return false;
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
     }
 }
