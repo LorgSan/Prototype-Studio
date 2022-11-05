@@ -46,7 +46,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3f1dc4fa91c6c9142913616bd6a23e48, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  offset: {x: 0, y: 0, z: 0}
 --- !u!33 &5262877178050386448
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -135,7 +134,7 @@ Transform:
   m_GameObject: {fileID: 5076918522021566254}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 0.5}
+  m_LocalScale: {x: 1, y: 1, z: 0.32076433}
   m_Children:
   - {fileID: 2031724698581761814}
   m_Father: {fileID: 0}
@@ -153,4 +152,3 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3f1dc4fa91c6c9142913616bd6a23e48, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  offset: {x: -0.5, y: 0, z: 0}

@@ -4,29 +4,40 @@ using UnityEngine;
 
 public class MazeRotator : MonoBehaviour
 {
-    [SerializeField] private int difficulty;
-    public List<Transform> innerWalls;
+    [Range(7, 25)][SerializeField] private int difficulty;
+    [HideInInspector] public List<Transform> innerWalls;
+    [HideInInspector] public List<Transform> rotateWalls;
     float currentRotY;
     float startRotY;
-    float endRotY;
+ 
     bool rotated;
+
+    public void PresetLevel()
+    {
+        for (int i = 0; i <= difficulty; i++)
+        {
+            int randomInd = Random.Range(0, innerWalls.Count-1);
+            rotateWalls.Add(innerWalls[randomInd]);
+            innerWalls.RemoveAt(randomInd);
+        }
+    }
 
     public void RotateWalls()
     {
         if (rotated)
         {
-            for (int i = 0; i < innerWalls.Count; i++)
+            for (int i = 0; i < rotateWalls.Count; i++)
             {
-                innerWalls[i].GetComponent<WallRotate>().Rotate(true);
+                rotateWalls[i].GetComponent<WallRotate>().Rotate(true);
             }
             rotated = false;
         } else
         {
-            for (int i = 0; i < innerWalls.Count; i++)
+            for (int i = 0; i < rotateWalls.Count; i++)
             {
-                innerWalls[i].GetComponent<WallRotate>().Rotate(true);
+                rotateWalls[i].GetComponent<WallRotate>().Rotate(false);
             }
-            rotated = false;
+            rotated = true;
         }
     }
 }
