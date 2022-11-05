@@ -15,7 +15,7 @@ public class CustomMazeEditor : Editor
         {
             if (GUILayout.Button("Rotate walls"))
             {
-                mazeRotator.RotateWalls();
+                mazeRotator.RotateWalls(0.1f);
             }
         }
     }

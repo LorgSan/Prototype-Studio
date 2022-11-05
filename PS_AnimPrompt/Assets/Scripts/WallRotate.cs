@@ -16,11 +16,11 @@ public class WallRotate : MonoBehaviour
         }
         transform.rotation = toAngle;
     }
-    public void Rotate (bool goingBack)
+    public void Rotate (bool goingBack, float speed)
     {
         if (goingBack)
         {
-            StartCoroutine(RotateMe(Vector3.up * -90, 0.8f));
-        } else StartCoroutine(RotateMe(Vector3.up * 90, 0.8f));
+            StartCoroutine(RotateMe(Vector3.up * -90, speed));
+        } else StartCoroutine(RotateMe(Vector3.up * 90, speed));
    }
  }

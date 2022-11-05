@@ -14,6 +14,7 @@ public class MazeRotator : MonoBehaviour
 
     public void PresetLevel()
     {
+        rotateWalls.Clear();
         for (int i = 0; i <= difficulty; i++)
         {
             int randomInd = Random.Range(0, innerWalls.Count-1);
@@ -22,20 +23,20 @@ public class MazeRotator : MonoBehaviour
         }
     }
 
-    public void RotateWalls()
+    public void RotateWalls(float speed)
     {
         if (rotated)
         {
             for (int i = 0; i < rotateWalls.Count; i++)
             {
-                rotateWalls[i].GetComponent<WallRotate>().Rotate(true);
+                rotateWalls[i].GetComponent<WallRotate>().Rotate(true, speed);
             }
             rotated = false;
         } else
         {
             for (int i = 0; i < rotateWalls.Count; i++)
             {
-                rotateWalls[i].GetComponent<WallRotate>().Rotate(false);
+                rotateWalls[i].GetComponent<WallRotate>().Rotate(false, speed);
             }
             rotated = true;
         }

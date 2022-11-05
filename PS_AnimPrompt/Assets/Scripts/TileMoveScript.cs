@@ -8,7 +8,7 @@ public class TileMoveScript : MonoBehaviour
     [SerializeField] MazeRenderer mazeScript;
     [HideInInspector] public Vector2 startPosition;
     WallState currentCell;
-    float step;
+    [SerializeField] float step;
     float originY;
     Vector3 newPos;
     float fraction;
@@ -17,28 +17,15 @@ public class TileMoveScript : MonoBehaviour
 
     void Start()
     {
-        step = mazeScript.size;
+        //step = mazeScript.size;
         originY = transform.position.y;
     }
     void Update()
     {
 
-        if(Input.GetKeyDown(KeyCode.W) && isMoving == false)
+        if(Input.GetKeyDown(KeyCode.W))
         {
-            newPos = new Vector3 (transform.position.x, originY, transform.position.y + step);
-            isMoving = true;
-        }
-
-        if (isMoving == true) 
-        {
-            fraction += Time.deltaTime * speed;
-            Vector3 tempPos = Vector3.MoveTowards(transform.position, newPos, fraction);
-            transform.position = tempPos;
-
-            if (transform.position == newPos)
-            {
-                isMoving = false;
-            }
+            LeanTween.moveZ(gameObject, +0.75f, speed);
         }
     }
 }
