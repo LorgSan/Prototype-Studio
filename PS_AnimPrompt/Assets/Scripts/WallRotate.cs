@@ -18,9 +18,10 @@ public class WallRotate : MonoBehaviour
     }
     public void Rotate (bool goingBack, float speed)
     {
-        if (goingBack)
-        {
-            StartCoroutine(RotateMe(Vector3.up * -90, speed));
-        } else StartCoroutine(RotateMe(Vector3.up * 90, speed));
+        StartCoroutine(RotateMe(Vector3.up * 90, speed));
+        // if (goingBack)
+        // {
+        //     StartCoroutine(RotateMe(Vector3.up * -90, speed));
+        // } else StartCoroutine(RotateMe(Vector3.up * 90, speed));
    }
  }
