@@ -6,7 +6,7 @@ public class TiledMove : MonoBehaviour
 {
     float step;
     bool MovementAllowed = true;
-    Vector3 startPos;
+    [HideInInspector] public Vector3 startPos;
     
     [Header("PlayerSettings")]
     [SerializeField] float speed;
@@ -24,6 +24,7 @@ public class TiledMove : MonoBehaviour
     [SerializeField] MazeRenderer mazeScript;
     [SerializeField] MazeRotator mazeRotator;
     [SerializeField] HealthViz healthVisualizer;
+    [SerializeField] GameManager myManager;
 
     [Header("Audio Setup")]
     [SerializeField] AudioSource audioSource;
@@ -106,6 +107,10 @@ public class TiledMove : MonoBehaviour
     void WallCol()
     {
         health = health-1;
+        if (health == 0)
+        {
+            myManager.EndGame();
+        } else
         audioSource.PlayOneShot(ouch);
         healthVisualizer.UpdateHealth();
         IEnumerator coroutine = ImmuneDelay(1f); 
